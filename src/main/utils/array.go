@@ -44,3 +44,46 @@ func ReverseArray(list []string) []string {
 	return list
 }
 
+
+// 删除数组中重复的元素
+func RemoveDuplicateArray(nums []int) []int {
+	if len(nums) == 0 {
+		return nums
+	}
+
+	result := make([]int, 0, len(nums))
+	numsMap := make(map[int]struct{})
+	for _, num := range nums {
+		if _, ok := numsMap[num]; !ok {
+			result = append(result, num)
+			numsMap[num] = struct{}{}
+		}
+	}
+
+	return result
+}
+
+
+// 删除数组中重复的元素，并且修改原来的数组
+func RemoveDuplicateArrayWithChange(nums *[]int) {
+	if len(*nums) == 0 {
+		return
+	}
+
+	numsMap := make(map[int]struct{})
+	lastLen := len(*nums)
+	for i := 0; i < lastLen; i += 1 {
+		num := (*nums)[i]
+		if _, ok := numsMap[num]; !ok {
+			numsMap[num] = struct{}{}
+		} else {
+			// 将后面的值全部改掉
+			for j := i; j < lastLen - 1; j += 1 {
+				(*nums)[j] = (*nums)[j+1]
+			}
+			lastLen -= 1
+			i -= 1
+		}
+	}
+	*nums = (*nums)[:lastLen]
+}
