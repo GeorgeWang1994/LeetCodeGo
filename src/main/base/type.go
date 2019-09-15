@@ -1,6 +1,7 @@
 package base
 
 import (
+     "errors"
      "strconv"
 )
 
@@ -76,4 +77,118 @@ func GetBinaryTree(values []string) *TreeNode {
      }
 
      return root
+}
+
+
+type LinkNode struct {
+     value interface{}
+     prev *LinkNode
+     next *LinkNode
+}
+
+func (node *LinkNode) Value() interface{} {
+     return node.value
+}
+
+func (node *LinkNode) Set(value interface{}) {
+     node.value = value
+}
+
+func (node *LinkNode) Previous() *LinkNode {
+     return node.prev
+}
+
+func (node *LinkNode) Next() *LinkNode {
+     return node.next
+}
+
+
+type NormalQueue struct {
+     front    *LinkNode
+     rear     *LinkNode
+     length   int
+     capacity int
+}
+
+func NewNormalQueue(capacity int) (*NormalQueue, error) {
+     if capacity <= 0 {
+          return nil, errors.New("capacity is less than 0")
+     }
+
+     front := &LinkNode{
+          value:    nil,
+          prev: nil,
+     }
+
+     rear := &LinkNode{
+          value:    nil,
+          prev: front,
+     }
+
+     front.next = rear
+     return &NormalQueue{
+          front:    front,
+          rear:     rear,
+          capacity: capacity,
+     }, nil
+}
+
+func (q *NormalQueue) Length() int {
+     return q.length
+}
+
+func (q *NormalQueue) Capacity() int {
+     return q.capacity
+}
+
+func (q *NormalQueue) Front() *LinkNode {
+     if q.length == 0 {
+          return nil
+     }
+
+     return q.front.next
+}
+
+func (q *NormalQueue) Rear() *LinkNode {
+     if q.length == 0 {
+          return nil
+     }
+
+     return q.rear.prev
+}
+
+func (q *NormalQueue) Enqueue(value interface{}) bool {
+     if q.length == q.capacity || value == nil {
+          return false
+     }
+
+     node := &LinkNode{
+          value: value,
+     }
+
+     if q.length == 0 {
+          q.front.next = node
+     }
+
+     node.prev = q.rear.prev
+     node.next = q.rear
+     q.rear.prev.next = node
+     q.rear.prev = node
+     q.length++
+
+     return true
+}
+
+func (q *NormalQueue) Dequeue() interface{} {
+     if q.length == 0 {
+          return nil
+     }
+
+     result := q.front.next
+     q.front.next = result.next
+     result.next = nil
+     result.prev = nil
+     q.length--
+
+     return result.value
 }

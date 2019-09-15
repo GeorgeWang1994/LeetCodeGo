@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"log"
 	"main/base"
 	"main/math"
@@ -61,14 +62,78 @@ func minDepth2(root *base.TreeNode) int {
 	}
 }
 
+// 使用自己实现的队列
+func minDepth3(root *base.TreeNode) int {
+	if root == nil {
+		return 0
+	}
 
-// todo: 补充BFS做法
+	queue, err := base.NewNormalQueue(10)
+	if err != nil {
+		return 0
+	}
+
+	queue.Enqueue(root)
+	minLevel := 0
+
+	// 每遍历一次，相当于遍历一层的结点
+	for queue.Length() > 0 {
+		minLevel++
+		levelSize := queue.Length()
+		for i := 0; i < levelSize; i++ {
+			node := queue.Front().Value().(*base.TreeNode)
+			queue.Dequeue()
+			// 只要出现该层出现第一个叶子结点，就是题目所要求的最短路径
+			if node.Left == nil && node.Right == nil {
+				return minLevel
+			} else if node.Left != nil {
+				queue.Enqueue(node.Left)
+			} else {
+				queue.Enqueue(node.Right)
+			}
+		}
+	}
+	return minLevel
+}
+
+// 使用原生的List
+func minDepth4(root *base.TreeNode) int {
+	var minLevel int
+	queue := list.New()
+	if root != nil {
+		queue.PushBack(root)
+	}
+	for queue.Len() > 0 {
+		minLevel++
+		levelSize := queue.Len()
+		for i := 0; i < levelSize; i++ {
+			node := queue.Front().Value.(*base.TreeNode)
+			queue.Remove(queue.Front())
+			if node.Left == nil && node.Right == nil {
+				return minLevel
+			}
+			if node.Left != nil {
+				queue.PushBack(node.Left)
+			}
+			if node.Right != nil {
+				queue.PushBack(node.Right)
+			}
+		}
+	}
+	return minLevel
+}
 
 
 func main() {
 	values := []string{"1", "2", "3", "nil", "4", "5", "nil"}
 	root := base.GetBinaryTree(values)
 	if minDepth2(root) != 3 {
+		log.Fatal("error")
+	}
+	if minDepth3(root) != 3 {
+		log.Fatal("error")
+	}
+	if minDepth4(root) != 3 {
 		log.Fatal("error")
 	}
 	log.Print("success")
