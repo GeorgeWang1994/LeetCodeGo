@@ -1,10 +1,10 @@
-package main
+package min
 
 import (
+	"LeetCodeGo/base"
+	"LeetCodeGo/utils"
 	"container/list"
 	"log"
-	"main/base"
-	"main/math"
 )
 
 /**
@@ -41,7 +41,7 @@ func minDepth(root *base.TreeNode) int {
 	if leftDepth == 0 || rightDepth == 0 {
 		return 1 + leftDepth + rightDepth
 	}
-	return 1 + math.Min(leftDepth, rightDepth)
+	return 1 + utils.Min(leftDepth, rightDepth)
 }
 
 
@@ -54,7 +54,7 @@ func minDepth2(root *base.TreeNode) int {
 	}
 
 	if root.Left != nil && root.Right != nil {
-		return math.Min(minDepth(root.Left) + 1, minDepth(root.Right) + 1)
+		return utils.Min(minDepth(root.Left) + 1, minDepth(root.Right) + 1)
 	} else if root.Left != nil {
 		return minDepth(root.Left) + 1
 	} else {

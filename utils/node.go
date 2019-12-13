@@ -1,6 +1,8 @@
 package utils
 
-import "main/base"
+import (
+	"LeetCodeGo/base"
+)
 
 
 // 检查链表是否和数组一致
