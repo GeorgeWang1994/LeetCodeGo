@@ -1,2 +1,0 @@
-# LeetCodeGo
-leetcode for go
