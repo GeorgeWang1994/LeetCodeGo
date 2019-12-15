@@ -1,9 +1,9 @@
 package main
 
 import (
-	"LeetCodeGo/base"
-	"LeetCodeGo/utils"
-	"log"
+    "LeetCodeGo/base"
+    "LeetCodeGo/utils"
+    "log"
 )
 
 /*
@@ -28,56 +28,55 @@ import (
 
 */
 
-
 func traversal(node *base.TreeNode, nums *[]int) {
-	if node == nil {
-		return
-	}
-	if node.Left != nil {
-		traversal(node.Left, nums)
-	}
-	*nums = append(*nums, node.Val)
-	if node.Right != nil {
-		traversal(node.Right, nums)
-	}
+    if node == nil {
+        return
+    }
+    if node.Left != nil {
+        traversal(node.Left, nums)
+    }
+    *nums = append(*nums, node.Val)
+    if node.Right != nil {
+        traversal(node.Right, nums)
+    }
 }
 
 // 递归实现
 func inorderTraversal(root *base.TreeNode) []int {
-	nums := make([]int, 0)
-	traversal(root, &nums)
-	return nums
+    nums := make([]int, 0)
+    traversal(root, &nums)
+    return nums
 }
 
 // 迭代实现
 func inorderTraversal2(root *base.TreeNode) []int {
-	var nums []int
-	if root == nil {
-		return nums
-	}
-	nodes := make([]*base.TreeNode, 0)
-	cur := root
-	for cur != nil || len(nodes) > 0 {
-		for cur != nil {
-			nodes = append(nodes, cur)
-			cur = cur.Left
-		}
-		if len(nodes) > 0 {
-			cur = nodes[len(nodes) - 1]  // 勿粗心大意，这里的cur不要使用 := 而使得go以为是局部变量
-			nums = append(nums, cur.Val)
-			nodes = nodes[:len(nodes) - 1]
-			cur = cur.Right
-		}
-	}
-	return nums
+    var nums []int
+    if root == nil {
+        return nums
+    }
+    nodes := make([]*base.TreeNode, 0)
+    cur := root
+    for cur != nil || len(nodes) > 0 {
+        for cur != nil {
+            nodes = append(nodes, cur)
+            cur = cur.Left
+        }
+        if len(nodes) > 0 {
+            cur = nodes[len(nodes)-1] // 勿粗心大意，这里的cur不要使用 := 而使得go以为是局部变量
+            nums = append(nums, cur.Val)
+            nodes = nodes[:len(nodes)-1]
+            cur = cur.Right
+        }
+    }
+    return nums
 }
 
 func main() {
-	values := []string{"1", "nil", "2", "3"}
-	root := base.GetBinaryTree(values)
-	nums := inorderTraversal2(root)
-	if len(nums) != 3 || !utils.CompareEqual(nums, []int{1, 3, 2}) {
-		log.Fatal("error: ", nums)
-	}
-	log.Println("success")
+    values := []string{"1", "nil", "2", "3"}
+    root := base.GetBinaryTree(values)
+    nums := inorderTraversal2(root)
+    if len(nums) != 3 || !utils.CompareEqual(nums, []int{1, 3, 2}) {
+        log.Fatal("error: ", nums)
+    }
+    log.Println("success")
 }

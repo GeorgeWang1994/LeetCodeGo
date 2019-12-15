@@ -1,9 +1,9 @@
 package main
 
 import (
-	"LeetCodeGo/base"
-	"container/list"
-	"fmt"
+    "LeetCodeGo/base"
+    "container/list"
+    "fmt"
 )
 
 /*
@@ -29,66 +29,66 @@ import (
 链接：https://leetcode-cn.com/problems/construct-binary-search-tree-from-preorder-traversal
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
- */
+*/
 
 func bstFromPreorder(preorder []int) *base.TreeNode {
-	if len(preorder) == 0 {
-		return nil
-	} else if len(preorder) == 1 {
-		return &base.TreeNode{preorder[0], nil, nil}
-	}
-	root := &base.TreeNode{preorder[0], nil, nil}
-	rightIdx := len(preorder)
-	for idx, val := range preorder {
-		print(idx, val)
-		if val > preorder[0] {
-			rightIdx = idx
-			break
-		}
-	}
-	root.Left = bstFromPreorder(preorder[1:rightIdx])
-	root.Right = bstFromPreorder(preorder[rightIdx:])
-	return root
+    if len(preorder) == 0 {
+        return nil
+    } else if len(preorder) == 1 {
+        return &base.TreeNode{preorder[0], nil, nil}
+    }
+    root := &base.TreeNode{preorder[0], nil, nil}
+    rightIdx := len(preorder)
+    for idx, val := range preorder {
+        print(idx, val)
+        if val > preorder[0] {
+            rightIdx = idx
+            break
+        }
+    }
+    root.Left = bstFromPreorder(preorder[1:rightIdx])
+    root.Right = bstFromPreorder(preorder[rightIdx:])
+    return root
 }
 
 func bstFromPreorder2(preorder []int) *base.TreeNode {
-	n := len(preorder)
-	if n == 0 {
-		return nil
-	}
+    n := len(preorder)
+    if n == 0 {
+        return nil
+    }
 
-	statck := list.New()
-	root := &base.TreeNode{preorder[0], nil, nil}
-	statck.PushBack(root)
+    statck := list.New()
+    root := &base.TreeNode{preorder[0], nil, nil}
+    statck.PushBack(root)
 
-	for i := 1; i < n; i++ {
-		parent := statck.Back().Value.(*base.TreeNode)
-		child := &base.TreeNode{preorder[i], nil, nil}
-		// 如果栈顶元素比子结点小，则一直出栈知道栈顶的值比子结点的值要大
-		for {
-			if statck.Len() == 0 {
-				break
-			}
-			back := statck.Back().Value.(*base.TreeNode)
-			if back.Val < child.Val {
-				parent = statck.Back().Value.(*base.TreeNode)
-				statck.Remove(statck.Back())
-			} else {
-				break
-			}
-		}
-		if parent.Val < child.Val {
-			parent.Right = child
-		} else {
-			parent.Left = child
-		}
-		statck.PushBack(child)
-	}
-	return root
+    for i := 1; i < n; i++ {
+        parent := statck.Back().Value.(*base.TreeNode)
+        child := &base.TreeNode{preorder[i], nil, nil}
+        // 如果栈顶元素比子结点小，则一直出栈知道栈顶的值比子结点的值要大
+        for {
+            if statck.Len() == 0 {
+                break
+            }
+            back := statck.Back().Value.(*base.TreeNode)
+            if back.Val < child.Val {
+                parent = statck.Back().Value.(*base.TreeNode)
+                statck.Remove(statck.Back())
+            } else {
+                break
+            }
+        }
+        if parent.Val < child.Val {
+            parent.Right = child
+        } else {
+            parent.Left = child
+        }
+        statck.PushBack(child)
+    }
+    return root
 }
 
 func main() {
-	preorder := []int{8,5,1,7,10,12}
-	result := bstFromPreorder2(preorder)
-	fmt.Println(result)
+    preorder := []int{8, 5, 1, 7, 10, 12}
+    result := bstFromPreorder2(preorder)
+    fmt.Println(result)
 }

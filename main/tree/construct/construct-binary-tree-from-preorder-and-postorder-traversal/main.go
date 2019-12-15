@@ -1,8 +1,8 @@
 package main
 
 import (
-	"LeetCodeGo/base"
-	"LeetCodeGo/utils"
+    "LeetCodeGo/base"
+    "LeetCodeGo/utils"
 )
 
 /*
@@ -31,26 +31,24 @@ pre[] 和 post[] 都是 1, 2, ..., pre.length 的排列
 
 */
 
-
 func recursive(preorder []int, postorder []int) *base.TreeNode {
-	if len(preorder) == 0 {
-		return nil
-	} else if len(preorder) == 1 {
-		return &base.TreeNode{preorder[0], nil, nil}
-	}
+    if len(preorder) == 0 {
+        return nil
+    } else if len(preorder) == 1 {
+        return &base.TreeNode{preorder[0], nil, nil}
+    }
 
-	root := &base.TreeNode{preorder[0], nil, nil}
-	leftRootIdx := utils.IndexOf(postorder, preorder[1], 1)
-	root.Left = recursive(preorder[1:1+leftRootIdx], postorder[:leftRootIdx])
-	root.Right = recursive(preorder[1+leftRootIdx:], postorder[leftRootIdx+1:len(postorder)-1])
-	return root
+    root := &base.TreeNode{preorder[0], nil, nil}
+    leftRootIdx := utils.IndexOf(postorder, preorder[1], 1)
+    root.Left = recursive(preorder[1:1+leftRootIdx], postorder[:leftRootIdx])
+    root.Right = recursive(preorder[1+leftRootIdx:], postorder[leftRootIdx+1:len(postorder)-1])
+    return root
 }
 
 func constructFromPrePost(preorder []int, postorder []int) *base.TreeNode {
-	if len(preorder) == 0 || len(postorder) == 0 {
-		return nil
-	}
+    if len(preorder) == 0 || len(postorder) == 0 {
+        return nil
+    }
 
-	return recursive(preorder, postorder)
+    return recursive(preorder, postorder)
 }
-

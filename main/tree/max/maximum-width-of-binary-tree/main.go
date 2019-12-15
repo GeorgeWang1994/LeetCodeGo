@@ -1,9 +1,9 @@
 package main
 
 import (
-	"LeetCodeGo/base"
-	"LeetCodeGo/utils"
-	"container/list"
+    "LeetCodeGo/base"
+    "LeetCodeGo/utils"
+    "container/list"
 )
 
 /*
@@ -70,40 +70,40 @@ import (
 */
 
 type NodeInfo struct {
-	node *base.TreeNode;
-	idx  int;
+    node *base.TreeNode;
+    idx  int;
 }
 
 // 问题可以转化为求每一层最左结点和最右结点的距离，取所有层的距离最大
 func widthOfBinaryTree(root *base.TreeNode) int {
-	if root == nil {
-		return 0
-	} else if root.Left == nil && root.Right == nil {
-		return 1
-	}
-	var maxWidth = -1
-	stack := list.New()
-	stack.PushBack(NodeInfo{root, 0})
-	tempStack := list.New()
-	for {
-		info := stack.Front().Value.(NodeInfo)
-		stack.Remove(stack.Front())
+    if root == nil {
+        return 0
+    } else if root.Left == nil && root.Right == nil {
+        return 1
+    }
+    var maxWidth = -1
+    stack := list.New()
+    stack.PushBack(NodeInfo{root, 0})
+    tempStack := list.New()
+    for {
+        info := stack.Front().Value.(NodeInfo)
+        stack.Remove(stack.Front())
 
-		if info.node.Left != nil {
-			tempStack.PushBack(NodeInfo{info.node.Left, info.idx * 2 + 1})
-		}
-		if info.node.Right != nil {
-			tempStack.PushBack(NodeInfo{info.node.Right, info.idx * 2 + 2})
-		}
+        if info.node.Left != nil {
+            tempStack.PushBack(NodeInfo{info.node.Left, info.idx*2 + 1})
+        }
+        if info.node.Right != nil {
+            tempStack.PushBack(NodeInfo{info.node.Right, info.idx*2 + 2})
+        }
 
-		if stack.Len() == 0 {
-			if tempStack.Len() == 0 {
-				break
-			}
-			maxWidth = utils.Max(maxWidth, (tempStack.Back().Value.(NodeInfo).idx - tempStack.Front().Value.(NodeInfo).idx) + 1)
-			stack.PushBackList(tempStack)
-			tempStack = list.New()
-		}
-	}
-	return maxWidth
+        if stack.Len() == 0 {
+            if tempStack.Len() == 0 {
+                break
+            }
+            maxWidth = utils.Max(maxWidth, (tempStack.Back().Value.(NodeInfo).idx-tempStack.Front().Value.(NodeInfo).idx)+1)
+            stack.PushBackList(tempStack)
+            tempStack = list.New()
+        }
+    }
+    return maxWidth
 }

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"LeetCodeGo/base"
-	"LeetCodeGo/utils"
-	"fmt"
-	"log"
+    "LeetCodeGo/base"
+    "LeetCodeGo/utils"
+    "fmt"
+    "log"
 )
 
 /*
@@ -33,33 +33,33 @@ import (
 */
 
 func recursive(inorder []int, postorder []int) *base.TreeNode {
-	if len(inorder) == 0 {
-		return nil
-	} else if len(inorder) == 1 {
-		return &base.TreeNode{inorder[0], nil, nil}
-	}
+    if len(inorder) == 0 {
+        return nil
+    } else if len(inorder) == 1 {
+        return &base.TreeNode{inorder[0], nil, nil}
+    }
 
-	rootVal := postorder[len(postorder)-1]
-	root := &base.TreeNode{rootVal, nil, nil}
-	rootIdx := utils.IndexOf(inorder, rootVal, 1)
-	root.Left = recursive(inorder[:rootIdx], postorder[:rootIdx])
-	root.Right = recursive(inorder[rootIdx+1:], postorder[rootIdx:len(postorder)-1])
-	return root
+    rootVal := postorder[len(postorder)-1]
+    root := &base.TreeNode{rootVal, nil, nil}
+    rootIdx := utils.IndexOf(inorder, rootVal, 1)
+    root.Left = recursive(inorder[:rootIdx], postorder[:rootIdx])
+    root.Right = recursive(inorder[rootIdx+1:], postorder[rootIdx:len(postorder)-1])
+    return root
 }
 
 func buildTree(inorder []int, postorder []int) *base.TreeNode {
-	if len(inorder) == 0 || len(postorder) == 0 {
-		return nil
-	}
+    if len(inorder) == 0 || len(postorder) == 0 {
+        return nil
+    }
 
-	return recursive(inorder, postorder)
+    return recursive(inorder, postorder)
 }
 
 func main() {
-	inorder := []int{9, 3, 15, 20, 7}
-	postorder := []int{9, 15, 7, 20, 3}
+    inorder := []int{9, 3, 15, 20, 7}
+    postorder := []int{9, 15, 7, 20, 3}
 
-	result := buildTree(inorder, postorder)
-	fmt.Println(result)
-	log.Println("success")
+    result := buildTree(inorder, postorder)
+    fmt.Println(result)
+    log.Println("success")
 }

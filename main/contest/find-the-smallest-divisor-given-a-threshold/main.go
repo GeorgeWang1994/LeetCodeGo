@@ -1,24 +1,11 @@
 package main
 
 import (
+	"LeetCodeGo/utils"
 	"fmt"
 	"math"
 	"sort"
 )
-
-type IntList []int
-
-func (i IntList) Len() int {
-	return len(i)
-}
-
-func (i IntList) Swap(p, q int) {
-	i[p], i[q] = i[q], i[p]
-}
-
-func (i IntList) Less(p, q int) bool {
-	return i[p] < i[q]
-}
 
 /*
 
@@ -29,7 +16,7 @@ func (i IntList) Less(p, q int) bool {
  */
 func smallestDivisor(nums []int, threshold int) int {
 	l := len(nums)
-	sort.Sort(IntList(nums))
+	sort.Sort(utils.IntList(nums))
 	low, high := 1, nums[l-1]
 	target := high  // 保证目标是数组中最大值，可保证除数和最小（因为此时全部除数都是1，除数之和就是 1 * l）
 	for low <= high {
